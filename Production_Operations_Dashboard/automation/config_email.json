@@ -1,0 +1,53 @@
+{
+  "邮件服务器配置": {
+    "SMTP_SERVER": "smtp.gmail.com",
+    "SMTP_PORT": 587,
+    "说明": "使用 Gmail 需要启用 2FA 并生成应用专用密码"
+  },
+  "发件人配置": {
+    "SENDER_EMAIL": "production@company.com",
+    "SENDER_PASSWORD_ENV": "EMAIL_PASSWORD",
+    "说明": "密码应通过环境变量 EMAIL_PASSWORD 提供，不要硬编码在这里"
+  },
+  "收件人列表": {
+    "日报收件人": [
+      "manager@company.com",
+      "supervisor@company.com"
+    ],
+    "Yield告警收件人": [
+      "quality@company.com",
+      "manager@company.com"
+    ]
+  },
+  "Yield警告阈值": {
+    "YIELD_CRITICAL": 0.90,
+    "说明_CRITICAL": "< 90% 为严重告警（红色）",
+    "YIELD_WARNING": 0.95,
+    "说明_WARNING": "90-95% 为警告（黄色）",
+    "YIELD_NORMAL": 0.95,
+    "说明_NORMAL": ">= 95% 为正常（绿色）"
+  },
+  "文件路径": {
+    "EXCEL_PATH": "C:\\Projects\\Production_management\\Production_Operations_Dashboard\\v39_Normalized.xlsx",
+    "REPORT_DIR": "C:\\Projects\\Production_management\\Production_Operations_Dashboard\\reports",
+    "LOG_DIR": "C:\\Projects\\Production_management\\Production_Operations_Dashboard\\logs"
+  },
+  "配置说明": {
+    "1_设置环境变量": "在 Windows 系统中设置 EMAIL_PASSWORD 环境变量，值为邮箱密码",
+    "2_SMTP_SERVER_选项": [
+      "Gmail: smtp.gmail.com (需要应用专用密码)",
+      "企业邮箱: 根据企业配置修改",
+      "阿里企业邮箱: smtp.qiye.aliyun.com"
+    ],
+    "3_端口说明": [
+      "587: TLS 加密连接（推荐）",
+      "465: SSL 加密连接",
+      "25: 无加密（不推荐）"
+    ],
+    "4_Gmail配置步骤": [
+      "1. 启用 2 步验证",
+      "2. 生成应用专用密码 (https://myaccount.google.com/apppasswords)",
+      "3. 使用生成的密码作为 EMAIL_PASSWORD 环境变量值"
+    ]
+  }
+}
