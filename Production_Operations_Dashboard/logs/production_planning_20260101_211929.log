@@ -1,0 +1,24 @@
+2026-01-01 21:19:29,558 - INFO - 初始化生产规划表生成器
+2026-01-01 21:19:29,558 - INFO - ================================================================================
+2026-01-01 21:19:29,558 - INFO - 开始生成生产物料规划表
+2026-01-01 21:19:29,558 - INFO - ================================================================================
+2026-01-01 21:19:29,559 - INFO - 加载工作簿: C:\Projects\Production_management\Production_Operations_Dashboard\data\v39_Dashboard_Enhanced.xlsx
+2026-01-01 21:19:30,202 - INFO - 创建新的 14_Production_Planning 工作表
+2026-01-01 21:19:30,203 - INFO - 创建备份: C:\Projects\Production_management\Production_Operations_Dashboard\data\v39_Dashboard_Enhanced_backup_before_planning.xlsx
+2026-01-01 21:19:30,206 - INFO - 备份创建成功
+2026-01-01 21:19:30,207 - INFO - 添加标题完成
+2026-01-01 21:19:30,207 - INFO - 添加订单汇总...
+2026-01-01 21:19:30,208 - INFO - 订单汇总添加完成
+2026-01-01 21:19:30,208 - INFO - 添加鸟笼库存状态...
+2026-01-01 21:19:30,209 - INFO - 鸟笼库存状态添加完成
+2026-01-01 21:19:30,209 - INFO - 添加原料库存...
+2026-01-01 21:19:30,212 - INFO - 原料库存添加完成
+2026-01-01 21:19:30,212 - INFO - 优化列宽...
+2026-01-01 21:19:30,212 - INFO - 应用条件格式...
+2026-01-01 21:19:30,238 - INFO - 保存工作簿到: C:\Projects\Production_management\Production_Operations_Dashboard\data\v39_Dashboard_Enhanced.xlsx
+2026-01-01 21:19:31,468 - INFO - 工作簿保存成功
+2026-01-01 21:19:31,468 - INFO - ================================================================================
+2026-01-01 21:19:31,468 - INFO - ✅ 生产规划表生成成功
+2026-01-01 21:19:31,468 - INFO - ================================================================================
+2026-01-01 21:19:31,468 - INFO - 输出文件: C:\Projects\Production_management\Production_Operations_Dashboard\data\v39_Dashboard_Enhanced.xlsx
+2026-01-01 21:19:31,468 - INFO - 备份文件: C:\Projects\Production_management\Production_Operations_Dashboard\data\v39_Dashboard_Enhanced_backup_before_planning.xlsx
