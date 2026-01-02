@@ -1,9 +1,27 @@
 # Production Management - 日报自动化处理项目
 
-## 项目概述
+---
+
+## 🧠 全局记忆
+
+### 通信语言
+- **语言**: 中文（简体中文）
+- **设置时间**: 2026-01-02
+- **说明**: 所有对话、文档和提示均使用中文
+
+---
+
+## 📦 项目记忆: Production Management
+
+### 项目标识
+- **项目名称**: Production Management
+- **项目代号**: production
+- **语言**: 中文
+
+### 项目概述
 负责鸡肉厂 **Tray Pack** 和 **Cut-Up** 部门的生产管理
 
-## 项目目标
+### 项目目标
 自动化处理日报，提高数据分析效率和决策支持能力
 
 ## 数据源
@@ -304,52 +322,87 @@ Cages 需要 (笼数)
 - `data/v39_Dashboard_Enhanced.xlsx` - 包含 14_Production_Planning 表
 - `data/v39_Dashboard_Enhanced_backup_before_planning_v2.xlsx` - 安全备份
 
-#### Sub-task 3 ⏳ Excel 结构审计和生产物料转换逻辑验证 - 进行中
+#### Sub-task 3 ✅ Excel 结构审计和生产物料转换逻辑修复 - COMPLETED
 **启动时间**: 2026-01-01 21:45
-**当前状态**: 🔄 审计完成，计划待执行
+**完成时间**: 2026-01-02 06:51
+**状态**: ✅ 修复完成
 
 **审计目标**:
-验证 Excel 文件是否正确实现了生产物料转换逻辑：
+验证并修复 Excel 文件的生产物料转换逻辑：
 ```
 Cases × Avg_Case_Weight ÷ Yield% ÷ 680kg/cage = Cages Needed
 ```
 
-**核心发现** (详见 EXCEL_AUDIT_REPORT.md):
+**修复成果**:
 
-🔴 **严重问题**:
-1. **订单表缺少转换逻辑** (02_TrayPack_Order, 03_BulkPack_Order, 04_Bagging_Order)
-   - 缺失 6 列计算：Product_Group, Avg_Case_Weight, Yield_Rate, WIP_kg, Raw_kg_Needed, Cages_Needed
-   - 无法在订单级别追踪鸡笼需求
-   - 无法按产品分析 Yield 对笼子的影响
+✅ **已修复问题 #1: 05_Daily_Orders 添加转换逻辑列**
+- 添加 6 个新列 (N-S):
+  - N: Product_Group (XLOOKUP from SKU_Master!E)
+  - O: Avg_Case_Weight (XLOOKUP from SKU_Master!F)
+  - P: Yield_Rate (XLOOKUP from Yield_Rates!E)
+  - Q: WIP_kg (Cases × Avg_Case_Weight)
+  - R: Raw_kg_Needed (WIP_kg ÷ Yield%)
+  - S: Cages_Needed (Raw_kg ÷ 680)
+- 总计 **1,962 个公式** 添加 (327 行 × 6 列)
 
-2. **14_Production_Planning 使用不正确的聚合方式**
-   - 使用全部产品的平均值：`=AVERAGE('00_SKU_Master'!F:F)` ❌
-   - 应该按每个订单的实际产品查找对应的 Yield%
-   - 平均 Yield 无法反映 BSB(31%) 和 ThighMeat(10.5%) 的巨大差异
+✅ **已修复问题 #2: 14_Production_Planning 聚合逻辑**
+- TrayPack 行: 使用 SUMPRODUCT 加权平均代替 AVERAGE
+  - C6: 加权平均重量
+  - E6: 加权平均 Yield
+  - F6: Raw_kg 汇总 (直接引用 05_Daily_Orders!R)
+  - G6: Cages 汇总 (直接引用 05_Daily_Orders!S)
+- 添加 2 个新列: F (Raw_kg需求), G (Cages需要)
+- 总计行 (Row 9) 更新
 
-🟡 **中等问题**:
-3. **数据引用链不完整** - SKU → Product_Group → Yield% 的链路断裂
-4. **缺少数据验证** - Cases > 0, Product_Group 有效性, Yield < 95% 异常检测
+**修复脚本**:
+- `automation/fix_conversion_logic.py` - 主修复脚本
+- 备份: `v39_Dashboard_Enhanced_backup_before_fix_20260102_065058.xlsx`
+- 日志: `logs/fix_conversion_logic_20260102_065058.log`
 
-**改进优先级**:
+**验证结果**:
+- ✅ 05_Daily_Orders: 1,962 公式, 0 错误
+- ✅ 14_Production_Planning: 231 公式, 0 错误
+- ✅ 完整转换链路: SKU → Product_Group → Yield% → Cages
 
-| 优先级 | 任务 | 影响 | 修复时间 |
-|-------|------|------|---------|
-| 1️⃣ 高 | 在订单表添加转换逻辑列 | 无法追踪订单级笼子需求 | 2-3h |
-| 1️⃣ 高 | 修正 14_Production_Planning 聚合逻辑 | Cages 计算不准确 | 1-2h |
-| 2️⃣ 中 | 添加数据验证规则 | 易发生数据错误 | 1h |
-| 2️⃣ 中 | 添加 Yield 异常检测 | Yield < 95% 无警告 | 1h |
+**数据流 (已修复)**:
+```
+05_Daily_Orders
+├─ B: SKU
+├─ M: Today's Order (Cases)
+├─ N: Product_Group ← XLOOKUP(SKU, SKU_Master!E)
+├─ O: Avg_Case_Weight ← XLOOKUP(SKU, SKU_Master!F)
+├─ P: Yield_Rate ← XLOOKUP(Product_Group, Yield_Rates!E)
+├─ Q: WIP_kg = M × O
+├─ R: Raw_kg_Needed = Q ÷ P
+└─ S: Cages_Needed = ROUNDUP(R ÷ 680)
+        ↓
+14_Production_Planning
+├─ G6: TrayPack Cages = SUMIF(05_Daily_Orders!S)
+└─ G9: Total Cages = SUM(G6:G8)
+```
 
-**下一步计划** (明天):
-- [ ] 修复 02_TrayPack_Order (添加 6 个计算列)
-- [ ] 修复 03_BulkPack_Order (添加 6 个计算列)
-- [ ] 修复 04_Bagging_Order (添加 6 个计算列)
-- [ ] 更新 14_Production_Planning (修正聚合逻辑)
-- [ ] 验证所有公式无误
-- [ ] 测试完整数据流
+✅ **已修复问题 #3: BulkPack 转换逻辑 (10_Cone_Line)**
+**完成时间**: 2026-01-02 06:57
+- 添加 6 个新列 (I-N): Product_Group, Avg_Case_Weight, Yield_Rate, WIP_kg, Raw_kg_Needed, Cages_Needed
+- 总计 **768 个公式** 添加 (128 行 × 6 列)
+- 14_Production_Planning Row 7 (BulkPack): 使用 SUMPRODUCT 加权平均
+
+✅ **已修复问题 #4: Bagging 转换逻辑 (04_Bagging_Order)**
+**完成时间**: 2026-01-02 06:57
+- 添加 6 个新列 (N-S): Product_Group, Avg_Case_Weight, Yield_Rate, WIP_kg, Raw_kg_Needed, Cages_Needed
+- 总计 **108 个公式** 添加 (18 行 × 6 列)
+- 汇总行 (Row 3): Q3, R3, S3 公式
+- 14_Production_Planning Row 8 (Bagging): 使用 SUMPRODUCT 加权平均
+
+**修复脚本**:
+- `automation/fix_bulkpack_bagging.py` - BulkPack/Bagging 修复脚本
+- 备份: `v39_Dashboard_Enhanced_backup_bulkpack_20260102_065653.xlsx`
+
+**待优化** (优先级低):
+- 🟡 数据验证规则 (后续添加)
 
 **关键文档**:
-- `EXCEL_AUDIT_REPORT.md` - 完整审计报告 (365 行, 详细分析 + 实现建议)
+- `EXCEL_AUDIT_REPORT.md` - 完整审计报告 (365 行)
 
 #### Sub-task 4 ⏳ 数据分析增强 - 待启动
 计划在后续实现趋势和预测分析（历史数据追踪、周期对比、预测建模）
@@ -590,4 +643,4 @@ Phase 3 UI/UX 改进 (新增)
 ```
 
 ---
-*Last Updated: 2026-01-01 21:45* (Phase 3 Sub-task 3: Excel 审计完成 - 发现生产物料转换逻辑实现缺陷 + EXCEL_AUDIT_REPORT.md 发布)
+*Last Updated: 2026-01-02 06:58* (Phase 3 Sub-task 3: 完全修复 - TrayPack/BulkPack/Bagging 全部添加转换逻辑，共 2,838 个公式)
