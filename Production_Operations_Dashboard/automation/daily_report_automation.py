@@ -1,17 +1,17 @@
 """
-生产日报自动化系统 - Phase 3 实现
-Production Daily Report Automation System
+生产日报自动化系统 - Phase 3 实现 (已移除 Yield 功能)
+Production Daily Report Automation System (Yield Feature Removed)
 
 功能:
 1. 从 v39_Normalized.xlsx 提取当日生产数据
-2. 计算关键指标 (订单数、产量、Yield等)
-3. 检测 Yield < 95% 的警告项
-4. 生成日报文件 (Excel 格式)
-5. 发送邮件通知 (含警告详情)
-6. 记录执行日志
+2. 计算关键指标 (订单数、产量等)
+3. 生成日报文件 (Excel 格式)
+4. 发送邮件通知
+5. 记录执行日志
 
 作者: Claude Code
 创建日期: 2026-01-01
+修改日期: 2026-01-01 (移除 Yield 功能)
 """
 
 import openpyxl
@@ -48,14 +48,6 @@ class Config:
         "manager@company.com",
         "supervisor@company.com"
     ]
-    YIELD_ALERT_RECIPIENTS = [
-        "quality@company.com",
-        "manager@company.com"
-    ]
-
-    # Yield 警告阈值
-    YIELD_CRITICAL = 0.90      # < 90%: 严重
-    YIELD_WARNING = 0.95       # 90-95%: 警告
 
     # 日志配置
     LOG_LEVEL = logging.INFO
@@ -101,7 +93,6 @@ class DailyReportGenerator:
         self.report_date = datetime.now().strftime("%Y-%m-%d")
         self.report_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.daily_data = {}
-        self.alerts = []
         self.report_file = None
 
         logger.info(f"初始化日报生成器, 报告日期: {self.report_date}")
@@ -141,21 +132,7 @@ class DailyReportGenerator:
                        f"完成={self.daily_data['completed_orders']}, "
                        f"完成率={self.daily_data['completion_rate']:.1f}%")
 
-            # 2. 从 00_Yield_Rates 提取 Yield 数据
-            df_yields = pd.read_excel(
-                self.excel_path,
-                sheet_name='00_Yield_Rates',
-                header=0
-            )
-
-            if 'Yield' in df_yields.columns:
-                yields = pd.to_numeric(df_yields['Yield'], errors='coerce')
-                self.daily_data['avg_yield'] = yields.mean() * 100  # 转换为百分比
-                self.daily_data['min_yield'] = yields.min() * 100
-                logger.info(f"Yield 统计: 平均={self.daily_data['avg_yield']:.1f}%, "
-                           f"最低={self.daily_data['min_yield']:.1f}%")
-
-            # 3. 从 13_Progress_Track 提取进度数据
+            # 2. 从 13_Progress_Track 提取进度数据
             df_progress = pd.read_excel(
                 self.excel_path,
                 sheet_name='13_Progress_Track',
@@ -175,54 +152,6 @@ class DailyReportGenerator:
 
         except Exception as e:
             logger.error(f"提取当日数据失败: {str(e)}")
-            return False
-
-    def check_yield_alerts(self):
-        """检查 Yield < 95% 的警告"""
-        try:
-            logger.info("开始检查 Yield 警告...")
-
-            df_yields = pd.read_excel(
-                self.excel_path,
-                sheet_name='00_Yield_Rates',
-                header=0
-            )
-
-            self.alerts = []
-
-            # 检查每个 SKU 的 Yield
-            for idx, row in df_yields.iterrows():
-                sku = row.get('SKU', f"SKU_{idx}")
-                sku_desc = row.get('SKU_Description', '')
-                yield_value = row.get('Yield', 1.0)
-
-                # 确保 yield_value 是数字
-                try:
-                    yield_pct = float(yield_value) * 100
-                except (ValueError, TypeError):
-                    continue
-
-                # 检查警告条件
-                if yield_pct < Config.YIELD_WARNING:
-                    alert_level = "严重" if yield_pct < Config.YIELD_CRITICAL else "警告"
-
-                    alert = {
-                        'sku': sku,
-                        'description': sku_desc,
-                        'yield_pct': yield_pct,
-                        'level': alert_level,
-                        'gap': Config.YIELD_WARNING - yield_pct,
-                        'timestamp': self.report_datetime
-                    }
-
-                    self.alerts.append(alert)
-                    logger.warning(f"Yield 警告 [{alert_level}]: {sku} ({sku_desc}) = {yield_pct:.1f}%")
-
-            logger.info(f"检查完成, 发现 {len(self.alerts)} 个警告")
-            return True
-
-        except Exception as e:
-            logger.error(f"检查 Yield 警告失败: {str(e)}")
             return False
 
     def generate_report_file(self):
@@ -274,71 +203,12 @@ class DailyReportGenerator:
             report_ws[f'B{row}'] = f"{self.daily_data.get('total_cases', 0):.0f}"
             row += 2
 
-            # Yield 分析
-            report_ws[f'A{row}'] = "=== 二、Yield 分析 ==="
-            row += 1
-
-            report_ws[f'A{row}'] = "平均 Yield:"
-            report_ws[f'B{row}'] = f"{self.daily_data.get('avg_yield', 0):.1f}%"
-            row += 1
-
-            report_ws[f'A{row}'] = "最低 Yield:"
-            report_ws[f'B{row}'] = f"{self.daily_data.get('min_yield', 0):.1f}%"
-            row += 2
-
-            # 警告部分
-            if self.alerts:
-                report_ws[f'A{row}'] = "=== 三、Yield 警告 ⚠️ ==="
-                row += 1
-
-                report_ws[f'A{row}'] = "SKU"
-                report_ws[f'B{row}'] = "Yield %"
-                report_ws[f'C{row}'] = "级别"
-                report_ws[f'A{row}'].font = openpyxl.styles.Font(bold=True)
-                report_ws[f'B{row}'].font = openpyxl.styles.Font(bold=True)
-                report_ws[f'C{row}'].font = openpyxl.styles.Font(bold=True)
-                row += 1
-
-                for alert in self.alerts:
-                    report_ws[f'A{row}'] = alert['sku']
-                    report_ws[f'B{row}'] = f"{alert['yield_pct']:.1f}%"
-                    report_ws[f'C{row}'] = alert['level']
-
-                    # 根据级别着色
-                    if alert['level'] == "严重":
-                        cell_fill = openpyxl.styles.PatternFill(
-                            start_color="FF0000",
-                            end_color="FF0000",
-                            fill_type="solid"
-                        )
-                    else:
-                        cell_fill = openpyxl.styles.PatternFill(
-                            start_color="FFFF00",
-                            end_color="FFFF00",
-                            fill_type="solid"
-                        )
-
-                    report_ws[f'A{row}'].fill = cell_fill
-                    report_ws[f'B{row}'].fill = cell_fill
-                    report_ws[f'C{row}'].fill = cell_fill
-
-                    row += 1
-
             # 建议部分
-            row += 1
-            report_ws[f'A{row}'] = "=== 四、建议 ==="
+            report_ws[f'A{row}'] = "=== 二、建议 ==="
             row += 1
 
-            if self.alerts:
-                report_ws[f'A{row}'] = "1. 立即关注上述警告项目"
-                row += 1
-                report_ws[f'A{row}'] = "2. 检查生产工艺参数"
-                row += 1
-                report_ws[f'A{row}'] = "3. 增加质检频率"
-                row += 1
-            else:
-                report_ws[f'A{row}'] = "所有指标正常，继续维持当前生产状态"
-                row += 1
+            report_ws[f'A{row}'] = "继续维持当前生产状态"
+            row += 1
 
             # 保存文件
             report_dir = Path(Config.REPORT_DIR)
@@ -365,12 +235,8 @@ class DailyReportGenerator:
             logger.info("开始发送邮件通知...")
 
             # 准备邮件内容
-            if self.alerts:
-                subject = f"【生产预警】{self.report_date} - Yield 低于目标"
-                recipients = Config.YIELD_ALERT_RECIPIENTS
-            else:
-                subject = f"【日报】{self.report_date} - 生产日报"
-                recipients = Config.RECIPIENT_LIST
+            subject = f"【日报】{self.report_date} - 生产日报"
+            recipients = Config.RECIPIENT_LIST
 
             # 创建邮件
             msg = MIMEMultipart()
@@ -417,31 +283,6 @@ class DailyReportGenerator:
 
     def _generate_email_body(self):
         """生成邮件正文 (HTML 格式)"""
-        alert_html = ""
-
-        if self.alerts:
-            alert_html = """
-            <h2 style="color: #cc0000;">⚠️ Yield 警告项目</h2>
-            <table style="border-collapse: collapse; width: 100%;">
-                <tr style="background-color: #f0f0f0;">
-                    <th style="border: 1px solid #ccc; padding: 8px;">SKU ID</th>
-                    <th style="border: 1px solid #ccc; padding: 8px;">Yield %</th>
-                    <th style="border: 1px solid #ccc; padding: 8px;">级别</th>
-                </tr>
-            """
-
-            for alert in self.alerts:
-                bg_color = "#ffcccc" if alert['level'] == "严重" else "#ffff99"
-                alert_html += f"""
-                <tr style="background-color: {bg_color};">
-                    <td style="border: 1px solid #ccc; padding: 8px;">{alert['sku']}</td>
-                    <td style="border: 1px solid #ccc; padding: 8px;">{alert['yield_pct']:.1f}%</td>
-                    <td style="border: 1px solid #ccc; padding: 8px;">{alert['level']}</td>
-                </tr>
-                """
-
-            alert_html += "</table>"
-
         html_body = f"""
         <html>
             <head>
@@ -458,21 +299,6 @@ class DailyReportGenerator:
                     <li>完成率: {self.daily_data.get('completion_rate', 0):.1f}%</li>
                     <li>总产量: {self.daily_data.get('total_cases', 0):.0f} Cases</li>
                 </ul>
-
-                <h2>📈 Yield 分析</h2>
-                <ul>
-                    <li>平均 Yield: {self.daily_data.get('avg_yield', 0):.1f}%</li>
-                    <li>最低 Yield: {self.daily_data.get('min_yield', 0):.1f}%</li>
-                </ul>
-
-                {alert_html}
-
-                <h2>建议行动</h2>
-                <ol>
-                    <li>检查上述警告项目的生产工艺</li>
-                    <li>联系质量部门增加检查频率</li>
-                    <li>查看详细报告文件了解更多信息</li>
-                </ol>
 
                 <hr>
                 <p style="color: #666; font-size: 12px;">
@@ -494,7 +320,6 @@ class DailyReportGenerator:
         steps = [
             ("加载 Excel 数据", self.load_data),
             ("提取当日数据", self.extract_daily_data),
-            ("检查 Yield 警告", self.check_yield_alerts),
             ("生成日报文件", self.generate_report_file),
             ("发送邮件通知", self.send_email_notification),
         ]
@@ -530,11 +355,6 @@ def main():
 
         if success and generator.report_file:
             print(f"\n✅ 日报已生成: {generator.report_file}")
-            print(f"   警告项数: {len(generator.alerts)}")
-            if generator.alerts:
-                print("   警告详情:")
-                for alert in generator.alerts:
-                    print(f"     - {alert['sku']}: {alert['yield_pct']:.1f}% [{alert['level']}]")
         else:
             print("\n❌ 日报生成失败")
             return 1
