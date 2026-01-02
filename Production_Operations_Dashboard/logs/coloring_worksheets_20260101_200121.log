@@ -1,0 +1,93 @@
+2026-01-01 20:01:21,198 - INFO - Creating backup: C:\Projects\Production_management\Production_Operations_Dashboard\data\v39_Normalized_Styled_backup_before_coloring.xlsx
+2026-01-01 20:01:21,203 - INFO - Backup created successfully
+2026-01-01 20:01:21,203 - INFO - 
+2026-01-01 20:01:21,203 - INFO - ============================================================
+2026-01-01 20:01:21,203 - INFO - Starting Worksheet Coloring Process
+2026-01-01 20:01:21,204 - INFO - ============================================================
+2026-01-01 20:01:21,204 - INFO - Loading workbook: C:\Projects\Production_management\Production_Operations_Dashboard\data\v39_Normalized_Styled.xlsx
+2026-01-01 20:01:21,694 - INFO - Loaded 16 worksheets
+2026-01-01 20:01:21,694 - INFO - ============================================================
+2026-01-01 20:01:21,694 - INFO - Coloring worksheets by data flow stages
+2026-01-01 20:01:21,694 - INFO - ============================================================
+2026-01-01 20:01:21,694 - INFO -   [主数据层    ] 00_SKU_Master        => #4472C4
+2026-01-01 20:01:21,694 - INFO -   [订单层     ] 01_Cages_Plan        => #70AD47
+2026-01-01 20:01:21,695 - INFO -   [订单层     ] 02_TrayPack_Order    => #70AD47
+2026-01-01 20:01:21,695 - INFO -   [订单层     ] 03_BulkPack_Order    => #70AD47
+2026-01-01 20:01:21,695 - INFO -   [订单层     ] 04_Bagging_Order     => #70AD47
+2026-01-01 20:01:21,695 - INFO -   [订单层     ] 05_Daily_Orders      => #70AD47
+2026-01-01 20:01:21,695 - INFO -   [订单层     ] 06_Resource_Plan     => #70AD47
+2026-01-01 20:01:21,695 - INFO -   [计算层     ] 07_Labor_Calc        => #FFC000
+2026-01-01 20:01:21,695 - INFO -   [计算层     ] 08_Chart_Data        => #FFC000
+2026-01-01 20:01:21,695 - INFO -   [其他/隐藏   ] 09_Pallet_Space      => #A5A5A5
+2026-01-01 20:01:21,695 - INFO -   [其他/隐藏   ] 10_Cone_Line         => #A5A5A5
+2026-01-01 20:01:21,696 - INFO -   [分析层     ] 00_Yield_Rates       => #7030A0
+2026-01-01 20:01:21,696 - INFO -   [分析层     ] 12_Executive_Dash    => #7030A0
+2026-01-01 20:01:21,696 - INFO -   [分析层     ] 13_Progress_Track    => #7030A0
+2026-01-01 20:01:21,696 - INFO -   [其他/隐藏   ] 14_Weekly_Plan       => #A5A5A5
+2026-01-01 20:01:21,696 - INFO -   [其他/隐藏   ] 15_5Day_Forecast     => #A5A5A5
+2026-01-01 20:01:21,696 - INFO - ============================================================
+2026-01-01 20:01:21,696 - INFO - Coloring Summary:
+2026-01-01 20:01:21,696 - INFO -   - Total worksheets: 16
+2026-01-01 20:01:21,696 - INFO -   - Colored: 16
+2026-01-01 20:01:21,696 - INFO -   - Unclassified: 0
+2026-01-01 20:01:21,696 - INFO - ============================================================
+2026-01-01 20:01:21,696 - INFO - 
+2026-01-01 20:01:21,696 - INFO - ============================================================
+2026-01-01 20:01:21,697 - INFO - Color Legend - Data Flow Stages
+2026-01-01 20:01:21,697 - INFO - ============================================================
+2026-01-01 20:01:21,697 - INFO - 
+  蓝色 #4472C4
+2026-01-01 20:01:21,697 - INFO -   -------------------------------------------------------
+2026-01-01 20:01:21,697 - INFO -     • 00_SKU_Master - 主数据、产品信息参考
+2026-01-01 20:01:21,697 - INFO - 
+  绿色 #70AD47
+2026-01-01 20:01:21,697 - INFO -   -------------------------------------------------------
+2026-01-01 20:01:21,697 - INFO -     • 01_Cages_Plan - 笼子计划
+2026-01-01 20:01:21,697 - INFO -     • 02_TrayPack_Order - 托盘包装订单
+2026-01-01 20:01:21,697 - INFO -     • 03_BulkPack_Order - 散装订单
+2026-01-01 20:01:21,697 - INFO -     • 04_Bagging_Order - 装袋订单
+2026-01-01 20:01:21,698 - INFO -     • 05_Daily_Orders - 每日订单（核心输入）
+2026-01-01 20:01:21,698 - INFO -     • 06_Resource_Plan - 原料/资源计划
+2026-01-01 20:01:21,698 - INFO - 
+  黄色 #FFC000
+2026-01-01 20:01:21,698 - INFO -   -------------------------------------------------------
+2026-01-01 20:01:21,698 - INFO -     • 07_Labor_Calc - 工时计算、劳动成本
+2026-01-01 20:01:21,698 - INFO -     • 08_Chart_Data - 图表数据中间层
+2026-01-01 20:01:21,698 - INFO - 
+  紫色 #7030A0
+2026-01-01 20:01:21,698 - INFO -   -------------------------------------------------------
+2026-01-01 20:01:21,698 - INFO -     • 00_Yield_Rates - 产率监控（Yield警告）
+2026-01-01 20:01:21,698 - INFO -     • 12_Executive_Dash - 执行仪表板（主要输出）
+2026-01-01 20:01:21,699 - INFO -     • 13_Progress_Track - 进度追踪
+2026-01-01 20:01:21,699 - INFO - 
+  灰色 #A5A5A5
+2026-01-01 20:01:21,699 - INFO -   -------------------------------------------------------
+2026-01-01 20:01:21,699 - INFO -     • 09_Pallet_Space - 托盘空间
+2026-01-01 20:01:21,699 - INFO -     • 10_Cone_Line - 锥形线
+2026-01-01 20:01:21,699 - INFO -     • 14_Weekly_Plan - 周计划
+2026-01-01 20:01:21,699 - INFO -     • 15_5Day_Forecast - 5日预测
+2026-01-01 20:01:21,699 - INFO - 
+============================================================
+2026-01-01 20:01:21,699 - INFO - ============================================================
+2026-01-01 20:01:21,699 - INFO - Coloring process completed successfully
+2026-01-01 20:01:21,699 - INFO - ============================================================
+2026-01-01 20:01:21,699 - INFO - Saving workbook: C:\Projects\Production_management\Production_Operations_Dashboard\data\v39_Normalized_Styled.xlsx
+2026-01-01 20:01:21,700 - ERROR - Unexpected error: [Errno 13] Permission denied: 'C:\\Projects\\Production_management\\Production_Operations_Dashboard\\data\\v39_Normalized_Styled.xlsx'
+Traceback (most recent call last):
+  File "C:\Projects\Production_management\automation\color_worksheets_by_function.py", line 320, in <module>
+    success = main()
+  File "C:\Projects\Production_management\automation\color_worksheets_by_function.py", line 287, in main
+    colorizer.save_workbook()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Projects\Production_management\automation\color_worksheets_by_function.py", line 230, in save_workbook
+    self.wb.save(self.workbook_path)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\site-packages\openpyxl\workbook\workbook.py", line 386, in save
+    save_workbook(self, filename)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\site-packages\openpyxl\writer\excel.py", line 291, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+  File "C:\Python314\Lib\zipfile\__init__.py", line 1453, in __init__
+    self.fp = io.open(file, filemode)
+              ~~~~~~~^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'C:\\Projects\\Production_management\\Production_Operations_Dashboard\\data\\v39_Normalized_Styled.xlsx'
