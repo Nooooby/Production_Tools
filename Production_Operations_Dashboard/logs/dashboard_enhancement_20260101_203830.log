@@ -1,0 +1,21 @@
+2026-01-01 20:38:30,412 - INFO - ======================================================================
+2026-01-01 20:38:30,412 - INFO - 开始 Dashboard 增强流程
+2026-01-01 20:38:30,412 - INFO - ======================================================================
+2026-01-01 20:38:30,413 - INFO - 加载工作簿: C:\Projects\Production_management\Production_Operations_Dashboard\data\v39_Normalized_Colored.xlsx
+2026-01-01 20:38:30,925 - INFO - 工作表加载完成: 12_Executive_Dash
+2026-01-01 20:38:30,926 - INFO - 创建备份: C:\Projects\Production_management\Production_Operations_Dashboard\data\v39_Normalized_Colored_backup_before_dashboard.xlsx
+2026-01-01 20:38:30,928 - INFO - 备份创建成功
+2026-01-01 20:38:30,928 - INFO - 开始添加 KPI 指标...
+2026-01-01 20:38:30,929 - ERROR - 错误: 'str' object attribute 'index' is read-only
+Traceback (most recent call last):
+  File "C:\Projects\Production_management\Production_Operations_Dashboard\automation\enhance_dashboard.py", line 362, in run
+    self.add_kpi_section()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Projects\Production_management\Production_Operations_Dashboard\automation\enhance_dashboard.py", line 164, in add_kpi_section
+    self.ws.column_dimensions['O'].width = 20
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Python314\Lib\site-packages\openpyxl\utils\bound_dictionary.py", line 25, in __getitem__
+    setattr(value, self.reference, key)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object attribute 'index' is read-only
+2026-01-01 20:38:30,932 - INFO - ❌ Dashboard 增强流程失败

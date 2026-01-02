@@ -1,0 +1,29 @@
+[2026-01-02 17:03:47] ============================================================
+[2026-01-02 17:03:47] Fix #REF! Error in 14_Production_Planning - Start
+[2026-01-02 17:03:47] ============================================================
+[2026-01-02 17:03:47] Backup created: C:\Projects\Production_Management\Production_Operations_Dashboard\data\v39_Dashboard_Enhanced_backup_ref_fix_20260102_170347.xlsx
+[2026-01-02 17:03:47] Loading workbook: C:\Projects\Production_Management\Production_Operations_Dashboard\data\v39_Dashboard_Enhanced.xlsx
+[2026-01-02 17:03:48] Checking 06_Resource_Plan structure...
+[2026-01-02 17:03:48]   Column B: Product Sub-Category
+[2026-01-02 17:03:48]   Column C: Potential RAW SKU
+[2026-01-02 17:03:48]   Column D: Cases of Raw Required
+[2026-01-02 17:03:48]   Column E: Cases of Raw in Inventory
+[2026-01-02 17:03:48]   Column F: Today's order Reqeust
+[2026-01-02 17:03:48]   Column G: Next Order Request
+[2026-01-02 17:03:48]   Column H: Product_Group
+[2026-01-02 17:03:48]   Column I: Avg_Case_Weight
+[2026-01-02 17:03:48]   Column J: Yield_Rate
+[2026-01-02 17:03:48]   Column K: WIP_kg
+[2026-01-02 17:03:48]   Column L: Raw_kg_Needed
+[2026-01-02 17:03:48]   Column M: Cages_Needed
+[2026-01-02 17:03:48]   Column O: Supply#
+[2026-01-02 17:03:48]   Column P: Cases of RAW Required
+[2026-01-02 17:03:48]   Column Q: Inventory
+[2026-01-02 17:03:48]   Column R: Request
+[2026-01-02 17:03:48] Key columns found:
+[2026-01-02 17:03:48]   Product_Group (H): H
+[2026-01-02 17:03:48]   Raw_kg_Needed (L): L
+[2026-01-02 17:03:48]   Cages_Needed (M): M
+[2026-01-02 17:03:48] Current formulas:
+[2026-01-02 17:03:48]   F6: =SUMIF('05_Daily_Orders'!$M$2:$M$328,">0",'05_Daily_Orders'!#REF!)
+[2026-01-02 17:03:48]   G6: =SUMIF('05_Daily_Orders'!$M$2:$M$328,">0",'05_Daily_Orders'!#REF!)

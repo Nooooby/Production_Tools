@@ -1,0 +1,46 @@
+[2026-01-02 06:56:53] ============================================================
+[2026-01-02 06:56:53] Fix BulkPack/Bagging Conversion Logic - Start
+[2026-01-02 06:56:53] ============================================================
+[2026-01-02 06:56:53] Backup created: Production_Operations_Dashboard/data/v39_Dashboard_Enhanced_backup_bulkpack_20260102_065653.xlsx
+[2026-01-02 06:56:53] Loading workbook: Production_Operations_Dashboard/data/v39_Dashboard_Enhanced.xlsx
+[2026-01-02 06:56:53] 10_Cone_Line: 129 rows, adding conversion columns I-N
+[2026-01-02 06:56:53]   Added header I1: Product_Group
+[2026-01-02 06:56:53]   Added header J1: Avg_Case_Weight
+[2026-01-02 06:56:53]   Added header K1: Yield_Rate
+[2026-01-02 06:56:53]   Added header L1: WIP_kg
+[2026-01-02 06:56:53]   Added header M1: Raw_kg_Needed
+[2026-01-02 06:56:53]   Added header N1: Cages_Needed
+[2026-01-02 06:56:53]   Added 768 formulas to 10_Cone_Line (rows 2-129)
+[2026-01-02 06:56:53] 04_Bagging_Order: Adding conversion columns N-S
+[2026-01-02 06:56:53]   Added header N4: Product_Group
+[2026-01-02 06:56:53]   Added header O4: Avg_Case_Weight
+[2026-01-02 06:56:53]   Added header P4: Yield_Rate
+[2026-01-02 06:56:53]   Added header Q4: WIP_kg
+[2026-01-02 06:56:53]   Added header R4: Raw_kg_Needed
+[2026-01-02 06:56:53]   Added header S4: Cages_Needed
+[2026-01-02 06:56:53]   Added 108 formulas to 04_Bagging_Order (rows 5-22)
+[2026-01-02 06:56:53] Fixing 14_Production_Planning BulkPack/Bagging rows...
+[2026-01-02 06:56:53]   Fixed BulkPack row (Row 7)
+[2026-01-02 06:56:53]   Fixed Bagging row (Row 8)
+[2026-01-02 06:56:53] Verifying formulas...
+[2026-01-02 06:56:53]   10_Cone_Line: Columns I-N added (128 rows)
+[2026-01-02 06:56:53]   04_Bagging_Order: Columns N-S added (18 rows)
+[2026-01-02 06:56:53]   14_Production_Planning!B7: =SUMIF('10_Cone_Line'!E:E,">0")...
+[2026-01-02 06:56:53]   14_Production_Planning!C7: =IF(B7>0,SUMPRODUCT(('10_Cone_Line'!$E$2:$E$129>0)...
+[2026-01-02 06:56:53]   14_Production_Planning!E7: =IF(B7>0,SUMPRODUCT(('10_Cone_Line'!$E$2:$E$129>0)...
+[2026-01-02 06:56:53]   14_Production_Planning!F7: =SUMIF('10_Cone_Line'!$E$2:$E$129,">0",'10_Cone_Li...
+[2026-01-02 06:56:53]   14_Production_Planning!G7: =SUMIF('10_Cone_Line'!$E$2:$E$129,">0",'10_Cone_Li...
+[2026-01-02 06:56:53]   14_Production_Planning!B8: =SUM('04_Bagging_Order'!I5:I22)...
+[2026-01-02 06:56:53]   14_Production_Planning!C8: =IF(B8>0,SUMPRODUCT(('04_Bagging_Order'!$I$5:$I$22...
+[2026-01-02 06:56:53]   14_Production_Planning!E8: =IF(B8>0,SUMPRODUCT(('04_Bagging_Order'!$I$5:$I$22...
+[2026-01-02 06:56:53]   14_Production_Planning!F8: =SUM('04_Bagging_Order'!R5:R22)...
+[2026-01-02 06:56:53]   14_Production_Planning!G8: =SUM('04_Bagging_Order'!S5:S22)...
+[2026-01-02 06:56:53] Saving workbook: Production_Operations_Dashboard/data/v39_Dashboard_Enhanced.xlsx
+[2026-01-02 06:56:55] ============================================================
+[2026-01-02 06:56:55] Fix BulkPack/Bagging - Complete
+[2026-01-02 06:56:55] Total formulas added: 876
+[2026-01-02 06:56:55]   - 10_Cone_Line: 768
+[2026-01-02 06:56:55]   - 04_Bagging_Order: 108
+[2026-01-02 06:56:55] Backup file: Production_Operations_Dashboard/data/v39_Dashboard_Enhanced_backup_bulkpack_20260102_065653.xlsx
+[2026-01-02 06:56:55] Log file: Production_Operations_Dashboard/logs/fix_bulkpack_bagging_20260102_065653.log
+[2026-01-02 06:56:55] ============================================================

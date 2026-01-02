@@ -404,6 +404,85 @@ Cases × Avg_Case_Weight ÷ Yield% ÷ 680kg/cage = Cages Needed
 **关键文档**:
 - `EXCEL_AUDIT_REPORT.md` - 完整审计报告 (365 行)
 
+✅ **已修复问题 #5: Cages 汇总逻辑修正 - MAX 取代 SUM**
+**完成时间**: 2026-01-02 11:46
+**状态**: ✅ 核心逻辑修复完成
+
+**问题背景**:
+用户发现原始 SUM 逻辑存在根本性错误：
+```
+错误逻辑: 总 Cages = TrayPack + BulkPack + Bagging (重复计算)
+正确逻辑: 总 Cages = MAX(各部位 Cages) (因为切一个笼同时产出所有部位)
+```
+
+**原理说明**:
+- 切割 1 个 Cage (680kg) 同时产出：
+  - Breast: 680 × 43% = 292 kg
+  - ThighMeat: 680 × 10.5% = 71 kg
+  - Drum: 680 × 12.8% = 87 kg
+  - Wing: 680 × 11% = 75 kg
+- 如果 ThighMeat 需要 3 笼、Breast 需要 5 笼、Drum 需要 2 笼
+  → 只需切 MAX(3, 5, 2) = 5 笼即可满足所有需求
+
+**修复内容**:
+- 在 14_Production_Planning 添加按部位汇总区域 (Rows 20-34):
+  - Row 21: 列头 (Product_Group | TrayPack | BulkPack | Bagging | Total)
+  - Rows 22-33: 12 个产品组的 Cages 汇总
+    - B列: =SUMIF('06_Resource_Plan'!H:H, A22, '06_Resource_Plan'!M:M)
+    - C列: =SUMIF('03_BulkPack_Order'!J$19:J$67, A22, O$19:O$67)
+    - D列: =SUMIF('04_Bagging_Order'!N$5:N$22, A22, S$5:S$22)
+    - E列: =B22+C22+D22
+  - Row 34: =MAX(E22:E33) - 取所有部位的最大 Cages
+- G9 公式修改: =E34 (引用 MAX 结果，不再使用 SUM)
+
+**修复脚本**:
+- `automation/fix_cages_max_logic.py` - Cages MAX 逻辑修复
+- 日志: `logs/fix_cages_max_20260102_114536.log`
+
+**验证结果**:
+- ✅ 12 个产品组汇总行正确
+- ✅ MAX 公式正确: E34 = MAX(E22:E33)
+- ✅ G9 引用正确: =E34
+
+✅ **已修复问题 #6: 14_Production_Planning Row 6 #REF! 错误**
+**完成时间**: 2026-01-02 17:04
+**状态**: ✅ 数据源统一完成
+
+**问题描述**:
+- F6 和 G6 引用了不存在的列导致 #REF! 错误
+- TrayPack 汇总行无法显示 Raw_kg 和 Cages
+
+**修复内容**:
+- F6: =SUMIF('06_Resource_Plan'!M:M,">0",'06_Resource_Plan'!L:L)
+- G6: =SUMIF('06_Resource_Plan'!M:M,">0",'06_Resource_Plan'!M:M)
+- 与 Rows 22-33 的数据源保持一致 (使用 06_Resource_Plan)
+
+**修复脚本**:
+- `automation/fix_ref_error_planning.py` - #REF! 错误修复脚本 (229 行)
+- 备份: `data/v39_Dashboard_Enhanced_backup_ref_fix_20260102_170419.xlsx`
+- 日志: `logs/fix_ref_error_20260102_170419.log`
+
+**验证结果**:
+- ✅ F6 公式正确: =SUMIF('06_Resource_Plan'!M:M,">0",'06_Resource_Plan'!L:L)
+- ✅ G6 公式正确: =SUMIF('06_Resource_Plan'!M:M,">0",'06_Resource_Plan'!M:M)
+- ✅ 无 #REF! 错误
+- ✅ G9 = E34, E34 = MAX(E22:E33) - 核心逻辑正确
+
+**Sub-task 3 总成果**:
+```
+总公式添加: 2,838 个
+  - 05_Daily_Orders: 1,962 公式
+  - 10_Cone_Line: 768 公式
+  - 04_Bagging_Order: 108 公式
+
+核心修复:
+  ✅ 三个订单表完整转换逻辑 (Cases → Cages)
+  ✅ 按产品组汇总 (12 个产品组)
+  ✅ MAX 聚合逻辑 (取最大值，不是求和)
+  ✅ 数据源统一 (06_Resource_Plan)
+  ✅ 0 个 #REF! 错误
+```
+
 #### Sub-task 4 ⏳ 数据分析增强 - 待启动
 计划在后续实现趋势和预测分析（历史数据追踪、周期对比、预测建模）
 

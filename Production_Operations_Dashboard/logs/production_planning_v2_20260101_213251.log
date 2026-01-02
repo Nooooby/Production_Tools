@@ -1,0 +1,14 @@
+2026-01-01 21:32:51,036 - INFO - 初始化生产规划表生成器 v2
+2026-01-01 21:32:51,036 - INFO - ================================================================================
+2026-01-01 21:32:51,036 - INFO - 开始生成生产规划表 v2（完整版）
+2026-01-01 21:32:51,036 - INFO - ================================================================================
+2026-01-01 21:32:51,037 - INFO - 加载工作簿: C:\Projects\Production_management\Production_Operations_Dashboard\data\v39_Dashboard_Enhanced.xlsx
+2026-01-01 21:32:51,561 - ERROR - 生成过程出错: 'MergedCell' object attribute 'value' is read-only
+Traceback (most recent call last):
+  File "C:\Projects\Production_management\Production_Operations_Dashboard\automation\create_production_planning_v2.py", line 328, in run
+    self.load_workbook()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Projects\Production_management\Production_Operations_Dashboard\automation\create_production_planning_v2.py", line 110, in load_workbook
+    cell.value = None
+    ^^^^^^^^^^
+AttributeError: 'MergedCell' object attribute 'value' is read-only

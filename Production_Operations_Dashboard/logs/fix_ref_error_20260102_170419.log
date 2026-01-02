@@ -1,0 +1,50 @@
+[2026-01-02 17:04:19] ============================================================
+[2026-01-02 17:04:19] Fix #REF! Error in 14_Production_Planning - Start
+[2026-01-02 17:04:19] ============================================================
+[2026-01-02 17:04:19] Backup created: C:\Projects\Production_Management\Production_Operations_Dashboard\data\v39_Dashboard_Enhanced_backup_ref_fix_20260102_170419.xlsx
+[2026-01-02 17:04:19] Loading workbook: C:\Projects\Production_Management\Production_Operations_Dashboard\data\v39_Dashboard_Enhanced.xlsx
+[2026-01-02 17:04:19] Checking 06_Resource_Plan structure...
+[2026-01-02 17:04:19]   Column B: Product Sub-Category
+[2026-01-02 17:04:19]   Column C: Potential RAW SKU
+[2026-01-02 17:04:19]   Column D: Cases of Raw Required
+[2026-01-02 17:04:19]   Column E: Cases of Raw in Inventory
+[2026-01-02 17:04:19]   Column F: Today's order Reqeust
+[2026-01-02 17:04:19]   Column G: Next Order Request
+[2026-01-02 17:04:19]   Column H: Product_Group
+[2026-01-02 17:04:19]   Column I: Avg_Case_Weight
+[2026-01-02 17:04:19]   Column J: Yield_Rate
+[2026-01-02 17:04:19]   Column K: WIP_kg
+[2026-01-02 17:04:19]   Column L: Raw_kg_Needed
+[2026-01-02 17:04:19]   Column M: Cages_Needed
+[2026-01-02 17:04:19]   Column O: Supply#
+[2026-01-02 17:04:19]   Column P: Cases of RAW Required
+[2026-01-02 17:04:19]   Column Q: Inventory
+[2026-01-02 17:04:19]   Column R: Request
+[2026-01-02 17:04:19] Key columns found:
+[2026-01-02 17:04:19]   Product_Group (H): H
+[2026-01-02 17:04:19]   Raw_kg_Needed (L): L
+[2026-01-02 17:04:19]   Cages_Needed (M): M
+[2026-01-02 17:04:19] Current formulas:
+[2026-01-02 17:04:19]   F6: =SUMIF('05_Daily_Orders'!$M$2:$M$328,">0",'05_Daily_Orders'!#REF!)
+[2026-01-02 17:04:19]   G6: =SUMIF('05_Daily_Orders'!$M$2:$M$328,">0",'05_Daily_Orders'!#REF!)
+[2026-01-02 17:04:19]   [ERROR] #REF! error detected!
+[2026-01-02 17:04:19] Fixing F6 and G6 formulas...
+[2026-01-02 17:04:19]   F6 updated:
+[2026-01-02 17:04:19]     Old: =SUMIF('05_Daily_Orders'!$M$2:$M$328,">0",'05_Daily_Orders'!#REF!)
+[2026-01-02 17:04:19]     New: =SUMIF('06_Resource_Plan'!M:M,">0",'06_Resource_Plan'!L:L)
+[2026-01-02 17:04:19]   G6 updated:
+[2026-01-02 17:04:19]     Old: =SUMIF('05_Daily_Orders'!$M$2:$M$328,">0",'05_Daily_Orders'!#REF!)
+[2026-01-02 17:04:19]     New: =SUMIF('06_Resource_Plan'!M:M,">0",'06_Resource_Plan'!M:M)
+[2026-01-02 17:04:19] Verifying fix...
+[2026-01-02 17:04:19]   [OK] F6 formula OK: =SUMIF('06_Resource_Plan'!M:M,">0",'06_Resource_Plan'!L:L)
+[2026-01-02 17:04:19]   [OK] G6 formula OK: =SUMIF('06_Resource_Plan'!M:M,">0",'06_Resource_Plan'!M:M)
+[2026-01-02 17:04:19]   Related formulas:
+[2026-01-02 17:04:19]     G9: =E34
+[2026-01-02 17:04:19]     E34: =MAX(E22:E33)
+[2026-01-02 17:04:19] [PASSED] Verification PASSED - All formulas OK
+[2026-01-02 17:04:19] Saving workbook: C:\Projects\Production_Management\Production_Operations_Dashboard\data\v39_Dashboard_Enhanced.xlsx
+[2026-01-02 17:04:21] ============================================================
+[2026-01-02 17:04:21] Fix #REF! Error - Complete
+[2026-01-02 17:04:21] Backup file: C:\Projects\Production_Management\Production_Operations_Dashboard\data\v39_Dashboard_Enhanced_backup_ref_fix_20260102_170419.xlsx
+[2026-01-02 17:04:21] Log file: C:\Projects\Production_Management\Production_Operations_Dashboard\logs\fix_ref_error_20260102_170419.log
+[2026-01-02 17:04:21] ============================================================
