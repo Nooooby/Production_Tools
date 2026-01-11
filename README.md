@@ -169,17 +169,3 @@ Department_Schedule_Template.xlsx
 
 Internal use only
 Designed for food processing production environments
-
-```
-
----
-
-如果你愿意，下一步我可以帮你：
-
-- 🔹 再精简一版（给 GitHub 公开看）
-- 🔹 写一个 `99_Instructions` 给现场主管
-- 🔹 拆成 `README + TECH.md + USER_GUIDE.md`
-- 🔹 中英双语 README（给总部 / IT）
-
-你直接说：**「改成哪种」**即可。
-```
