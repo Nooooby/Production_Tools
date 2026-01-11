@@ -159,7 +159,7 @@ WIP 需求 (kg)
 - **BulkPack** (10_Cone_Line 表): 散装订单
 - **Bagging** (04_Bagging_Order 表): 装袋订单
 
-### Excel 文件架构（v39_Dashboard_Enhanced.xlsx）
+### Excel 文件架构（FINAL_v70.xlsx）
 
 **主要工作表分层** (按数据流):
 
@@ -178,6 +178,7 @@ WIP 需求 (kg)
 3. **计算中间层** (黄色标签):
    - `07_Labor_Calc`: 工时计算
    - `08_Chart_Data`: 图表数据聚合
+   - `14_Demand_Aggregation`: 需求中间表 (WIP_kg 按产品组汇总)
 
 4. **分析输出层** (紫色标签):
    - `12_Executive_Dash`: 执行仪表板 (6 个 KPI + 3 个图表)
@@ -188,6 +189,7 @@ WIP 需求 (kg)
    - `09_Pallet_Space`: 托盘空间计划
    - `10_Cone_Line`: 锥形包装生产线
    - `15_5Day_Forecast`: 5 日预测
+   - `15_Weekly_Plan`: 周计划
 
 ### 关键数据结构说明
 
@@ -693,20 +695,20 @@ Cases × Avg_Case_Weight ÷ Yield% ÷ 680kg/cage = Cages Needed
 
 | 文件 | 说明 | 大小 |
 |------|------|------|
-| **v39_Dashboard_Enhanced.xlsx** | ⭐ 最新版（KPI+图表+条件格式） | 277 KB |
+| **FINAL_v70.xlsx** | ⭐ 最新版（含 Demand Aggregation 中间表） | - |
+| v39_Dashboard_Enhanced.xlsx | KPI+图表+条件格式 (历史版本) | 277 KB |
 | v39_Normalized_Colored.xlsx | 着色+格式化版本 | 277 KB |
 | v39_Normalized_Styled.xlsx | 带格式化的版本 | 276 KB |
 | v39_Normalized.xlsx | 原始规范化版本 | 260 KB |
 
-**推荐使用**: `v39_Dashboard_Enhanced.xlsx`
-- ⭐ 最新工作版本
+**推荐使用**: `FINAL_v70.xlsx`
+- ⭐ 当前主线版本
 - 6 个 KPI 指标卡片（总完成率、员工到岗率等）
 - 3 个专业可视化图表
 - 3 种自动条件格式（状态着色）
 - 工作表按功能着色
 - Executive Dashboard 现代灰色主题
-- 所有公式已修复 (0 个错误)
-- 数据完整性已验证
+- 需求中间表 (`14_Demand_Aggregation`) 替代复杂 SUMPRODUCT
 
 ---
 
@@ -723,6 +725,10 @@ Cases × Avg_Case_Weight ÷ Yield% ÷ 680kg/cage = Cages Needed
   ├─→ 03_BulkPack_Order (散装订单)
   ├─→ 04_Bagging_Order (装袋订单)
   └─→ 06_Resource_Plan (原料计划)
+        ↓
+  14_Demand_Aggregation (需求中间表)
+        ↓
+  14_Production_Planning (生产规划)
         ↓
   07_Labor_Calc (工时计算)
   08_Chart_Data (图表数据)
