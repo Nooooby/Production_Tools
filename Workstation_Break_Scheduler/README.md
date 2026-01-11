@@ -13,17 +13,3 @@ All user interface labels, buttons, and messages must be **English**.
 ## Notes
 - Keep a single entry macro that runs the full flow: assign stations → insert breaks → validate overlaps → export master.
 - Department-specific configuration will live in the Excel input sheets.
-
-## Git Safety Check (Branch + Clean Status)
-Run this in the repo root to confirm the current branch and whether there are uncommitted changes:
-
-```bash
-git status -sb
-```
-
-Expected output examples:
-- Clean on branch `work`:
-  `## work`
-- Uncommitted changes:
-  `## work`
-  ` M Workstation_Break_Scheduler/README.md`
